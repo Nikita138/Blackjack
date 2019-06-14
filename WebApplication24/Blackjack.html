@@ -1,0 +1,136 @@
+﻿<html>
+
+<body>
+    <div id="output">
+
+    </div>
+</body>
+</html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Arbutus+Slab" rel="stylesheet">
+    <link rel="stylesheet" href="Blackjack.css">
+</head>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="blackjack.js"></script>
+<script type="text/javascript">
+    //initialise the game
+    BlackjackJS.init();
+  
+</script>
+
+<button onclick="createDeck()">Create deck</button>
+<button onclick="dealPlayer()">Deal card to player</button>
+<button onclick="dealDealer()">Deal card to dealer</button>
+
+
+<button onclick="countPlayerHandValue()">Count player hand value</button>
+<button onclick="countDealerHandValue()">Count dealer hand value</button>
+
+<div id="player"></div>
+<div id="dealer"></div>
+
+<script>
+    //Deck will have 52 cards
+
+    //Enum
+    const suit = ['Spade', 'Hearts', 'Clubs', 'Diamond'];
+
+    //Enum
+    const face = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
+
+    //Deck
+    const deck = [];
+
+    //Player object
+    const player = {
+        cards: [],
+        handValue: 0
+    }
+
+    //Dealer object
+    const dealer = {
+        cards: [],
+        handValue: 0
+    }
+
+    //Card constructor
+    function card(_suit, _face) {
+        this.suit = _suit;
+        this.face = _face;
+
+        switch (_face) {
+            case 'A':
+                this.faceValue = 11;
+                break;
+            case 'T':
+            case 'J':
+            case 'Q':
+            case 'K':
+                this.faceValue = 10;
+                break;
+            default:
+                this.faceValue = parseInt(_face);
+                break;
+        }
+    }
+
+    // Create deck
+    const createDeck = () => {
+        deck.length = 0;
+        suit.forEach(suit => {
+            face.forEach(face => {
+                deck.push(new card(suit, face));
+            })
+        })
+        shuffleDeck()
+        console.log(deck);
+    }
+
+    //Shuffle deck
+    const shuffleDeck = () => {
+        // Fisher–Yates shuffle algorithm
+        let temp, i, rnd;
+        for (i = 0; i < deck.length; i++) {
+            rnd = Math.floor(Math.random() * deck.length);
+            temp = deck[i];
+            deck[i] = deck[rnd];
+            deck[rnd] = temp;
+        }
+    }
+
+    const CountHandValue = (person) => {
+        person.handValue = person.cards[0].faceValue + person.cards[1].faceValue;
+        console.log(person.handValue);
+    }
+
+    const dealPlayer = () => {
+        player.cards.push(deck.pop());
+
+        //Count hand value
+        // player.cards.forEach(card => {
+        //   console.log(card.faceValue)
+        //    }
+        //   )
+
+        console.log(player.cards);
+
+    }
+
+    const dealDealer = () => {
+        dealer.cards.push(deck.pop());
+        console.log(dealer.cards);
+    }
+
+    const countPlayerHandValue = () => {
+        CountHandValue(player);
+    }
+
+    const countDealerHandValue = () => {
+        CountHandValue(dealer);
+    }
+
+</script>
